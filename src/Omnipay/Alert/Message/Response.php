@@ -11,20 +11,10 @@ use Omnipay\Common\Message\RedirectResponseInterface;
  */
 class Response extends AbstractResponse implements RedirectResponseInterface
 {
-   /* public function __construct(RequestInterFace $request, $data)
-    {
-        $this->request = $request;
-        $this->data = $data;
-        if (!isset($this->data->Status)) {
-            throw new InvalidResponseException;
-        }
-    }*/
 
-    protected $endpoint;
-    public function __construct($purchaseRequest, $data, $endpoint)
+    public function __construct($purchaseRequest, $data)
     {
         parent::__construct($purchaseRequest, $data);
-       $this->endpoint = $endpoint;
     }
 
 
@@ -45,7 +35,6 @@ class Response extends AbstractResponse implements RedirectResponseInterface
 
     public function isSuccessful()
     {
-       // return 1 === (int) $this->data->Status;
         return false;
     }
 
@@ -56,7 +45,7 @@ class Response extends AbstractResponse implements RedirectResponseInterface
 
     public function getRedirectUrl()
     {
-        return $this->getRequest()->getEndpoint();//.'?'.http_build_query($this->getData());
+        return $this->getRequest()->getEndpoint();
     }
 
     public function getRedirectMethod()
@@ -67,6 +56,5 @@ class Response extends AbstractResponse implements RedirectResponseInterface
     public function getRedirectData()
     {
         return $this->getData();
-        //return http_build_query($this->getData());
     }
 }

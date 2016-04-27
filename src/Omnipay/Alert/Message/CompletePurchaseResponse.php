@@ -2,37 +2,38 @@
 
 namespace Omnipay\Alert\Message;
 
-use Omnipay\Common\Message\AbstractRequest;
 
-/**
- * DataCash Complete Purchase Request
- */
-class CompletePurchaseRequest extends AbstractRequest
+use Omnipay\Common\Message\AbstractResponse;
+
+class CompletePurchaseResponse extends AbstractResponse
 {
-    public function getData()
+    public function isSuccessful()
     {
-       // return $this->httpRequest->request->all();
-        $requestData = $this->getRequestData();
-
-        return $requestData;
+        return isset($this->data['Status']) ? $this->data['Status'] : null;
+    }
+    public function getTransactionReference()
+    {
+        return isset($this->data['TransactionReferenceID']) ? $this->data['TransactionReferenceID'] : null;
     }
 
-    public function getRequestData()
+    public function getCode()
     {
-        $data = ($this->getCallbackMethod() == 'POST') ?
-            $this->httpRequest->request->all() :
-            $this->httpRequest->query->all();
-        if (empty($data)) {
-            throw new InvalidResponseException(sprintf(
-                "No callback data was passed in the %s request",
-                $this->getCallbackMethod()
-            ));
-        }
-        return $data;
+        return isset($this->data['Code']) ? $this->data['Code'] : null;
     }
 
-    public function sendData($data)
+    public function getMessage()
     {
-        return $this->response = new CompletePurchaseResponse($this, $data);
+        return isset($this->data['Message']) ? $this->data['Message'] : null;
     }
+
+    public function getMerchantReference()
+    {
+        return isset($this->data['MerchantReference']) ? $this->data['MerchantReference'] : null;
+    }
+
+    public function getResult()
+    {
+        return isset($this->data['Result']) ? $this->data['Result'] : null;
+    }
+
 }

@@ -43,10 +43,12 @@ class PurchaseRequest extends AbstractRequest
     public $AMEXPurchaseType;
     protected $liveEndpoint = 'http://test.local/agp/checkout.php';
 
+
     const WSDL = "service.wsdl"; // Physical path to WSDL file. Should be in a non web-accessible directory
+    const SecureAPGPath = ''; // Physical path to secure.apg file. Should be in a non web-accessible directory
     const APGNamespace = "https://pgws.alert.com.mt/"; // APGNamespace. Do not modify.
-    const CurrencyCode = "EUR";
-    const CurrencyNumber = "978";
+    const CurrencyCode = "";
+    const CurrencyNumber = "";
     const BankMerchantNo = "";
     const Authorization = "Authorization";
     const VoidAuthorization = "VoidAuthorization";
@@ -105,12 +107,28 @@ class PurchaseRequest extends AbstractRequest
     {
         return $this->getParameter('callbackMethod');
     }
-
     public function setCallbackMethod($value)
     {
         return $this->setParameter('callbackMethod', $value);
     }
 
+    public function getReturnUrl()
+    {
+        return $this->getParameter('returnUrl');
+    }
+    public function setReturnUrl($value)
+    {
+        return $this->setParameter('returnUrl', $value);
+    }
+
+    public function getNotifyUrl()
+    {
+        return $this->getParameter('notifyUrl');
+    }
+    public function setNotifyUrl($value)
+    {
+        return $this->setParameter('notifyUrl', $value);
+    }
 
     public function getCardBrand()
     {
@@ -139,7 +157,7 @@ class PurchaseRequest extends AbstractRequest
         $data->addChild('MerchantReference', $this->getMerchantReference());
         $data->addChild('CurrencyNumber', $this->getCurrency());
         $data->addChild('Amount', $this->getAmount());
-        $data->addChild('ClientIP', '127.0.0.1');
+        $data->addChild('ClientIP', $_SERVER['REMOTE_ADDR']);
 
         $result = $this->ProcessTransaction($data, false);
 
@@ -150,6 +168,9 @@ class PurchaseRequest extends AbstractRequest
     {
         //$this->getCard()->validate();
         //$this->validate('amount');
+        if (!$this->getNotifyUrl()) {
+        $this->validate('returnUrl');
+        }
         $data =  new clsRequest();
 
         $data->KeyID = '';
@@ -159,8 +180,8 @@ class PurchaseRequest extends AbstractRequest
         $data->BankAlias = '';
         $data->TransactionType = '';
         $data->CardBrand = '';
-        $data->CurrencyNumber = $this->getCurrency();
-        $data->CurrencyCode = 'EUR';
+        $data->CurrencyNumber = $this->getCurrency()->Number;
+        $data->CurrencyCode = $this->getCurrency()->Code;
         $data->Amount = $this->getAmount();
         $data->CardNumber ='';
         $data->CVV2 = '';
@@ -168,41 +189,17 @@ class PurchaseRequest extends AbstractRequest
         $data->ExpiryMonth = '';
         $data->ExpiryDay = '';
         $data->CardHolder = '';
-        $data->Address = '';
-        $data->Postcode = '';
-        $data->UserDefinedField1 = '';
-        $data->UserDefinedField2 = '';
-        $data->UserDefinedField3 = '';
-        $data->UserDefinedField4 = '';
-        $data->UserDefinedField5 = '';
+        $data->Address = $this->getCard()->getAddress1();
+        $data->Postcode = $this->getCard()->getPostcode();
+        $data->Name = $this->getCard()->getName();;
+        $data->Country = $this->getCard()->getCountry();
+        $data->Phone = $this->getCard()->getPhone();
+        $data->Email = $this->getCard()->getEmail();
         $data->ClientIP = $_SERVER['REMOTE_ADDR'];
         $data->AMEXPurchaseType = '';
-
-        /*$data = new \SimpleXMLElement('<RequestValue/>');
-        $data->addChild('KeyID', 'NULL');
-        $data->addChild('TransactionReferenceID', $this->getTransactionID());
-        $data->addChild('BankMerchantNo', $this->getBankMerchantNo());
-        $data->addChild('BankAlias', 'NULL');
-        $data->addChild('TransactionType', 'Tentative');
-        $data->addChild('CardBrand', 'NULL');
-        $data->addChild('CurrencyNumber', $this->getCurrency());
-        $data->addChild('CurrencyCode', "EUR");
-        $data->addChild('Amount', $this->getAmount());
-        $data->addChild('CardNumber','NULL');
-        $data->addChild('CVV2','NULL');
-        $data->addChild('ExpiryMonth', 'NULL');
-        $data->addChild('ExpiryYear','NULL');
-        $data->addChild('ExpiryDay','NULL');
-        $data->addChild('CardHolder', 'NULL');
-        $data->addChild('Address', 'NULL');
-        $data->addChild('Postcode','NULL');
-        $data->addChild('UserDefinedField1','NULL');
-        $data->addChild('UserDefinedField2','NULL');
-        $data->addChild('UserDefinedField3','NULL');
-        $data->addChild('UserDefinedField4','NULL');
-        $data->addChild('UserDefinedField5','NULL');
-        $data->addChild('ClientIP', '127.0.0.1');
-        $data->addChild('AMEXPurchaseType', 'Unknown');*/
+        $data->notifyUrl = $this->getNotifyUrl();
+        $data->returnUrl = $this->getReturnUrl();
+        $data->CheckoutRequest = '';
 
         return $data;
     }
@@ -265,7 +262,7 @@ class PurchaseRequest extends AbstractRequest
             $xml = @simplexml_load_string($soap->__getLastResponse());
             $parentNode = $xml->xpath("soap:Body");
             $resultNode = $parentNode[0]->GetSupportedCurrencyResponse[0]->GetSupportedCurrencyResult[0];
-            return $resultNode->Number;
+            return $resultNode;
         } catch (\Exception $ex) {
             $this->handleException($ex);
             throw new \Exception("Unable to retrieve currency.");
@@ -407,7 +404,7 @@ class PurchaseRequest extends AbstractRequest
      */
     public function sendData($data)
     {
-      return $this->response = new Response($this, $data, $this->getEndpoint());
+      return $this->response = new Response($this, $data);
     }
 
     public function getEndpoint()
