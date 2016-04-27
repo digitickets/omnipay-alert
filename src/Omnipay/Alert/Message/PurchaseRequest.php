@@ -180,8 +180,8 @@ class PurchaseRequest extends AbstractRequest
         $data->BankAlias = '';
         $data->TransactionType = '';
         $data->CardBrand = '';
-        $data->CurrencyNumber = $this->getCurrency()->Number;
-        $data->CurrencyCode = $this->getCurrency()->Code;
+        $data->CurrencyNumber = $this->getCurrency();
+        $data->CurrencyCode = 'EUR';
         $data->Amount = $this->getAmount();
         $data->CardNumber ='';
         $data->CVV2 = '';
@@ -262,7 +262,7 @@ class PurchaseRequest extends AbstractRequest
             $xml = @simplexml_load_string($soap->__getLastResponse());
             $parentNode = $xml->xpath("soap:Body");
             $resultNode = $parentNode[0]->GetSupportedCurrencyResponse[0]->GetSupportedCurrencyResult[0];
-            return $resultNode;
+            return $resultNode->Number;
         } catch (\Exception $ex) {
             $this->handleException($ex);
             throw new \Exception("Unable to retrieve currency.");
