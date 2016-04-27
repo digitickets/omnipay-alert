@@ -1,0 +1,725 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:http="http://schemas.xmlsoap.org/wsdl/http/" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" xmlns:tns="https://pgws.alert.com.mt/" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tm="http://microsoft.com/wsdl/mime/textMatching/" xmlns:s="http://www.w3.org/2001/XMLSchema" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" targetNamespace="https://pgws.alert.com.mt/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+    <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Alert Payment Gateway Webservice</wsdl:documentation>
+    <wsdl:types>
+        <s:schema elementFormDefault="qualified" targetNamespace="https://pgws.alert.com.mt/">
+            <s:element name="InitToken">
+                <s:complexType />
+            </s:element>
+            <s:element name="InitTokenResponse">
+                <s:complexType>
+                    <s:sequence>
+                        <s:element minOccurs="0" maxOccurs="1" name="InitTokenResult" type="tns:Token" />
+                    </s:sequence>
+                </s:complexType>
+            </s:element>
+            <s:complexType name="Token">
+                <s:sequence>
+                    <s:element minOccurs="0" maxOccurs="1" name="KeyID" type="s:string" />
+                    <s:element minOccurs="0" maxOccurs="1" name="Key" type="s:string" />
+                    <s:element minOccurs="1" maxOccurs="1" name="KeySize" type="s:int" />
+                </s:sequence>
+            </s:complexType>
+            <s:element name="SecureSoapHeader" type="tns:SecureSoapHeader" />
+            <s:complexType name="SecureSoapHeader">
+                <s:sequence>
+                    <s:element minOccurs="0" maxOccurs="1" name="Identification" type="tns:Authorization" />
+                </s:sequence>
+                <s:anyAttribute />
+            </s:complexType>
+            <s:complexType name="Authorization">
+                <s:sequence>
+                    <s:element minOccurs="0" maxOccurs="1" name="UserID" type="s:string" />
+                    <s:element minOccurs="0" maxOccurs="1" name="Password" type="s:string" />
+                    <s:element minOccurs="0" maxOccurs="1" name="ReferringURL" type="s:string" />
+                </s:sequence>
+            </s:complexType>
+            <s:element name="GetPublicKey">
+                <s:complexType>
+                    <s:sequence>
+                        <s:element minOccurs="0" maxOccurs="1" name="ID" type="s:string" />
+                    </s:sequence>
+                </s:complexType>
+            </s:element>
+            <s:element name="GetPublicKeyResponse">
+                <s:complexType>
+                    <s:sequence>
+                        <s:element minOccurs="0" maxOccurs="1" name="GetPublicKeyResult" type="tns:Token" />
+                    </s:sequence>
+                </s:complexType>
+            </s:element>
+            <s:element name="ProcessTransaction">
+                <s:complexType>
+                    <s:sequence>
+                        <s:element minOccurs="0" maxOccurs="1" name="RequestValue" type="tns:Request" />
+                    </s:sequence>
+                </s:complexType>
+            </s:element>
+            <s:complexType name="Request">
+                <s:sequence>
+                    <s:element minOccurs="0" maxOccurs="1" name="KeyID" type="s:string" />
+                    <s:element minOccurs="0" maxOccurs="1" name="TransactionReferenceID" type="s:string" />
+                    <s:element minOccurs="0" maxOccurs="1" name="MerchantReference" type="s:string" />
+                    <s:element minOccurs="0" maxOccurs="1" name="BankMerchantNo" type="s:string" />
+                    <s:element minOccurs="0" maxOccurs="1" name="BankAlias" type="s:string" />
+                    <s:element minOccurs="1" maxOccurs="1" name="TransactionType" type="tns:TransactionType" />
+                    <s:element minOccurs="0" maxOccurs="1" name="CardBrand" type="s:string" />
+                    <s:element minOccurs="1" maxOccurs="1" name="CurrencyNumber" type="s:int" />
+                    <s:element minOccurs="0" maxOccurs="1" name="CurrencyCode" type="s:string" />
+                    <s:element minOccurs="1" maxOccurs="1" name="Amount" type="s:double" />
+                    <s:element minOccurs="0" maxOccurs="1" name="CardNumber" type="s:string" />
+                    <s:element minOccurs="0" maxOccurs="1" name="CVV2" type="s:string" />
+                    <s:element minOccurs="0" maxOccurs="1" name="ExpiryYear" type="s:string" />
+                    <s:element minOccurs="0" maxOccurs="1" name="ExpiryMonth" type="s:string" />
+                    <s:element minOccurs="0" maxOccurs="1" name="ExpiryDay" type="s:string" />
+                    <s:element minOccurs="0" maxOccurs="1" name="CardHolder" type="s:string" />
+                    <s:element minOccurs="0" maxOccurs="1" name="Address" type="s:string" />
+                    <s:element minOccurs="0" maxOccurs="1" name="Postcode" type="s:string" />
+                    <s:element minOccurs="0" maxOccurs="1" name="UserDefinedField1" type="s:string" />
+                    <s:element minOccurs="0" maxOccurs="1" name="UserDefinedField2" type="s:string" />
+                    <s:element minOccurs="0" maxOccurs="1" name="UserDefinedField3" type="s:string" />
+                    <s:element minOccurs="0" maxOccurs="1" name="UserDefinedField4" type="s:string" />
+                    <s:element minOccurs="0" maxOccurs="1" name="UserDefinedField5" type="s:string" />
+                    <s:element minOccurs="0" maxOccurs="1" name="ClientIP" type="s:string" />
+                    <s:element minOccurs="1" maxOccurs="1" name="AMEXPurchaseType" type="tns:AmericanExpressPurchaseType" />
+                </s:sequence>
+            </s:complexType>
+            <s:simpleType name="TransactionType">
+                <s:list>
+                    <s:simpleType>
+                        <s:restriction base="s:string">
+                            <s:enumeration value="Authorization" />
+                            <s:enumeration value="VoidAuthorization" />
+                            <s:enumeration value="Capture" />
+                            <s:enumeration value="VoidCapture" />
+                            <s:enumeration value="Purchase" />
+                            <s:enumeration value="VoidPurchase" />
+                            <s:enumeration value="Credit" />
+                            <s:enumeration value="VoidCredit" />
+                            <s:enumeration value="Tentative" />
+                        </s:restriction>
+                    </s:simpleType>
+                </s:list>
+            </s:simpleType>
+            <s:simpleType name="AmericanExpressPurchaseType">
+                <s:list>
+                    <s:simpleType>
+                        <s:restriction base="s:string">
+                            <s:enumeration value="Unknown" />
+                            <s:enumeration value="Electronic" />
+                            <s:enumeration value="Physical" />
+                        </s:restriction>
+                    </s:simpleType>
+                </s:list>
+            </s:simpleType>
+            <s:element name="ProcessTransactionResponse">
+                <s:complexType>
+                    <s:sequence>
+                        <s:element minOccurs="0" maxOccurs="1" name="ProcessTransactionResult" type="tns:Response" />
+                    </s:sequence>
+                </s:complexType>
+            </s:element>
+            <s:complexType name="Response">
+                <s:sequence>
+                    <s:element minOccurs="0" maxOccurs="1" name="TransactionReferenceID" type="s:string" />
+                    <s:element minOccurs="0" maxOccurs="1" name="RootTransactionReferenceID" type="s:string" />
+                    <s:element minOccurs="0" maxOccurs="1" name="MerchantReference" type="s:string" />
+                    <s:element minOccurs="0" maxOccurs="1" name="BatchNumber" type="s:string" />
+                    <s:element minOccurs="0" maxOccurs="1" name="TransactionTypeDesc" type="s:string" />
+                    <s:element minOccurs="1" maxOccurs="1" name="TransactionType" type="tns:TransactionType" />
+                    <s:element minOccurs="1" maxOccurs="1" name="CurrencyNumber" type="s:int" />
+                    <s:element minOccurs="0" maxOccurs="1" name="CurrencyCode" type="s:string" />
+                    <s:element minOccurs="1" maxOccurs="1" name="Amount" type="s:double" />
+                    <s:element minOccurs="1" maxOccurs="1" name="Status" type="s:boolean" />
+                    <s:element minOccurs="0" maxOccurs="1" name="ResultDesc" type="s:string" />
+                    <s:element minOccurs="1" maxOccurs="1" name="Result" type="tns:ResultType" />
+                    <s:element minOccurs="0" maxOccurs="1" name="ClearingBank" type="s:string" />
+                    <s:element minOccurs="0" maxOccurs="1" name="AuthCode" type="s:string" />
+                    <s:element minOccurs="0" maxOccurs="1" name="DateProcessed" type="s:string" />
+                    <s:element minOccurs="0" maxOccurs="1" name="Code" type="s:string" />
+                    <s:element minOccurs="0" maxOccurs="1" name="Message" type="s:string" />
+                    <s:element minOccurs="0" maxOccurs="1" name="BankMessage" type="s:string" />
+                    <s:element minOccurs="0" maxOccurs="1" name="UserDefinedField1" type="s:string" />
+                    <s:element minOccurs="0" maxOccurs="1" name="UserDefinedField2" type="s:string" />
+                    <s:element minOccurs="0" maxOccurs="1" name="UserDefinedField3" type="s:string" />
+                    <s:element minOccurs="0" maxOccurs="1" name="UserDefinedField4" type="s:string" />
+                    <s:element minOccurs="0" maxOccurs="1" name="UserDefinedField5" type="s:string" />
+                </s:sequence>
+            </s:complexType>
+            <s:simpleType name="ResultType">
+                <s:list>
+                    <s:simpleType>
+                        <s:restriction base="s:string">
+                            <s:enumeration value="Captured" />
+                            <s:enumeration value="Approved" />
+                            <s:enumeration value="Voided" />
+                            <s:enumeration value="NotCaptured" />
+                            <s:enumeration value="NotApproved" />
+                            <s:enumeration value="NotVoided" />
+                            <s:enumeration value="BankConnectionTimeout" />
+                            <s:enumeration value="BankRiskRejected" />
+                            <s:enumeration value="InProgress" />
+                            <s:enumeration value="BankRejected" />
+                            <s:enumeration value="Reconciled" />
+                            <s:enumeration value="NotReconciled" />
+                            <s:enumeration value="ReSubmitted" />
+                            <s:enumeration value="NotReSubmitted" />
+                            <s:enumeration value="Enrolled" />
+                            <s:enumeration value="NotEnrolled" />
+                            <s:enumeration value="Unavailable" />
+                            <s:enumeration value="NotAuthenticated" />
+                        </s:restriction>
+                    </s:simpleType>
+                </s:list>
+            </s:simpleType>
+            <s:element name="ProcessPATransaction">
+                <s:complexType>
+                    <s:sequence>
+                        <s:element minOccurs="0" maxOccurs="1" name="RequestValue" type="tns:Request" />
+                        <s:element minOccurs="0" maxOccurs="1" name="PaRes" type="s:string" />
+                    </s:sequence>
+                </s:complexType>
+            </s:element>
+            <s:element name="ProcessPATransactionResponse">
+                <s:complexType>
+                    <s:sequence>
+                        <s:element minOccurs="0" maxOccurs="1" name="ProcessPATransactionResult" type="tns:Response" />
+                    </s:sequence>
+                </s:complexType>
+            </s:element>
+            <s:element name="ProcessVbVTransaction">
+                <s:complexType>
+                    <s:sequence>
+                        <s:element minOccurs="0" maxOccurs="1" name="RequestValue" type="tns:Request" />
+                        <s:element minOccurs="0" maxOccurs="1" name="strTerminalURL" type="s:string" />
+                    </s:sequence>
+                </s:complexType>
+            </s:element>
+            <s:element name="ProcessVbVTransactionResponse">
+                <s:complexType>
+                    <s:sequence>
+                        <s:element minOccurs="0" maxOccurs="1" name="ProcessVbVTransactionResult" type="tns:VbVResponse" />
+                    </s:sequence>
+                </s:complexType>
+            </s:element>
+            <s:complexType name="VbVResponse">
+                <s:sequence>
+                    <s:element minOccurs="0" maxOccurs="1" name="TransactionReferenceID" type="s:string" />
+                    <s:element minOccurs="0" maxOccurs="1" name="RootTransactionReferenceID" type="s:string" />
+                    <s:element minOccurs="0" maxOccurs="1" name="MerchantReference" type="s:string" />
+                    <s:element minOccurs="0" maxOccurs="1" name="BatchNumber" type="s:string" />
+                    <s:element minOccurs="0" maxOccurs="1" name="TransactionTypeDesc" type="s:string" />
+                    <s:element minOccurs="1" maxOccurs="1" name="TransactionType" type="tns:TransactionType" />
+                    <s:element minOccurs="1" maxOccurs="1" name="CurrencyNumber" type="s:int" />
+                    <s:element minOccurs="0" maxOccurs="1" name="CurrencyCode" type="s:string" />
+                    <s:element minOccurs="1" maxOccurs="1" name="Amount" type="s:double" />
+                    <s:element minOccurs="1" maxOccurs="1" name="Status" type="s:boolean" />
+                    <s:element minOccurs="0" maxOccurs="1" name="ResultDesc" type="s:string" />
+                    <s:element minOccurs="1" maxOccurs="1" name="Result" type="tns:ResultType" />
+                    <s:element minOccurs="0" maxOccurs="1" name="ClearingBank" type="s:string" />
+                    <s:element minOccurs="0" maxOccurs="1" name="AuthCode" type="s:string" />
+                    <s:element minOccurs="0" maxOccurs="1" name="DateProcessed" type="s:string" />
+                    <s:element minOccurs="0" maxOccurs="1" name="Code" type="s:string" />
+                    <s:element minOccurs="0" maxOccurs="1" name="Message" type="s:string" />
+                    <s:element minOccurs="0" maxOccurs="1" name="BankMessage" type="s:string" />
+                    <s:element minOccurs="0" maxOccurs="1" name="UserDefinedField1" type="s:string" />
+                    <s:element minOccurs="0" maxOccurs="1" name="UserDefinedField2" type="s:string" />
+                    <s:element minOccurs="0" maxOccurs="1" name="UserDefinedField3" type="s:string" />
+                    <s:element minOccurs="0" maxOccurs="1" name="UserDefinedField4" type="s:string" />
+                    <s:element minOccurs="0" maxOccurs="1" name="UserDefinedField5" type="s:string" />
+                    <s:element minOccurs="0" maxOccurs="1" name="RawResponse" type="s:string" />
+                    <s:element minOccurs="0" maxOccurs="1" name="ACSURL" type="s:string" />
+                    <s:element minOccurs="0" maxOccurs="1" name="PARequest" type="s:string" />
+                    <s:element minOccurs="0" maxOccurs="1" name="PaymentID" type="s:string" />
+                    <s:element minOccurs="0" maxOccurs="1" name="VbVPostHTML" type="s:string" />
+                </s:sequence>
+            </s:complexType>
+            <s:element name="GetVbVResponseFromResponse">
+                <s:complexType>
+                    <s:sequence>
+                        <s:element minOccurs="0" maxOccurs="1" name="objResponse" type="tns:Response" />
+                    </s:sequence>
+                </s:complexType>
+            </s:element>
+            <s:element name="GetVbVResponseFromResponseResponse">
+                <s:complexType>
+                    <s:sequence>
+                        <s:element minOccurs="0" maxOccurs="1" name="GetVbVResponseFromResponseResult" type="tns:VbVResponse" />
+                    </s:sequence>
+                </s:complexType>
+            </s:element>
+            <s:element name="ProcessTransactionAuth">
+                <s:complexType>
+                    <s:sequence>
+                        <s:element minOccurs="0" maxOccurs="1" name="RequestValue" type="tns:Request" />
+                    </s:sequence>
+                </s:complexType>
+            </s:element>
+            <s:element name="ProcessTransactionAuthResponse">
+                <s:complexType>
+                    <s:sequence>
+                        <s:element minOccurs="0" maxOccurs="1" name="ProcessTransactionAuthResult" type="tns:Response" />
+                    </s:sequence>
+                </s:complexType>
+            </s:element>
+            <s:element name="GetTransaction">
+                <s:complexType>
+                    <s:sequence>
+                        <s:element minOccurs="0" maxOccurs="1" name="TransactionReferenceID" type="s:string" />
+                    </s:sequence>
+                </s:complexType>
+            </s:element>
+            <s:element name="GetTransactionResponse">
+                <s:complexType>
+                    <s:sequence>
+                        <s:element minOccurs="0" maxOccurs="1" name="GetTransactionResult" type="tns:Response" />
+                    </s:sequence>
+                </s:complexType>
+            </s:element>
+            <s:element name="GetAllowedCardBrands">
+                <s:complexType>
+                    <s:sequence>
+                        <s:element minOccurs="0" maxOccurs="1" name="BankMerchantID" type="s:string" />
+                    </s:sequence>
+                </s:complexType>
+            </s:element>
+            <s:element name="GetAllowedCardBrandsResponse">
+                <s:complexType>
+                    <s:sequence>
+                        <s:element minOccurs="0" maxOccurs="1" name="GetAllowedCardBrandsResult">
+                            <s:complexType>
+                                <s:sequence>
+                                    <s:element ref="s:schema" />
+                                    <s:any />
+                                </s:sequence>
+                            </s:complexType>
+                        </s:element>
+                    </s:sequence>
+                </s:complexType>
+            </s:element>
+            <s:element name="GetAllowedTransactions">
+                <s:complexType>
+                    <s:sequence>
+                        <s:element minOccurs="0" maxOccurs="1" name="BankMerchantID" type="s:string" />
+                    </s:sequence>
+                </s:complexType>
+            </s:element>
+            <s:element name="GetAllowedTransactionsResponse">
+                <s:complexType>
+                    <s:sequence>
+                        <s:element minOccurs="0" maxOccurs="1" name="GetAllowedTransactionsResult">
+                            <s:complexType>
+                                <s:sequence>
+                                    <s:element ref="s:schema" />
+                                    <s:any />
+                                </s:sequence>
+                            </s:complexType>
+                        </s:element>
+                    </s:sequence>
+                </s:complexType>
+            </s:element>
+            <s:element name="GetSupportedCurrency">
+                <s:complexType>
+                    <s:sequence>
+                        <s:element minOccurs="0" maxOccurs="1" name="BankMerchantID" type="s:string" />
+                    </s:sequence>
+                </s:complexType>
+            </s:element>
+            <s:element name="GetSupportedCurrencyResponse">
+                <s:complexType>
+                    <s:sequence>
+                        <s:element minOccurs="1" maxOccurs="1" name="GetSupportedCurrencyResult" type="tns:Currency" />
+                    </s:sequence>
+                </s:complexType>
+            </s:element>
+            <s:complexType name="Currency">
+                <s:sequence>
+                    <s:element minOccurs="0" maxOccurs="1" name="Name" type="s:string" />
+                    <s:element minOccurs="0" maxOccurs="1" name="Code" type="s:string" />
+                    <s:element minOccurs="0" maxOccurs="1" name="Number" type="s:string" />
+                    <s:element minOccurs="0" maxOccurs="1" name="Symbol" type="s:string" />
+                </s:sequence>
+            </s:complexType>
+        </s:schema>
+    </wsdl:types>
+    <wsdl:message name="InitTokenSoapIn">
+        <wsdl:part name="parameters" element="tns:InitToken" />
+    </wsdl:message>
+    <wsdl:message name="InitTokenSoapOut">
+        <wsdl:part name="parameters" element="tns:InitTokenResponse" />
+    </wsdl:message>
+    <wsdl:message name="InitTokenSecureSoapHeader">
+        <wsdl:part name="SecureSoapHeader" element="tns:SecureSoapHeader" />
+    </wsdl:message>
+    <wsdl:message name="GetPublicKeySoapIn">
+        <wsdl:part name="parameters" element="tns:GetPublicKey" />
+    </wsdl:message>
+    <wsdl:message name="GetPublicKeySoapOut">
+        <wsdl:part name="parameters" element="tns:GetPublicKeyResponse" />
+    </wsdl:message>
+    <wsdl:message name="GetPublicKeySecureSoapHeader">
+        <wsdl:part name="SecureSoapHeader" element="tns:SecureSoapHeader" />
+    </wsdl:message>
+    <wsdl:message name="ProcessTransactionSoapIn">
+        <wsdl:part name="parameters" element="tns:ProcessTransaction" />
+    </wsdl:message>
+    <wsdl:message name="ProcessTransactionSoapOut">
+        <wsdl:part name="parameters" element="tns:ProcessTransactionResponse" />
+    </wsdl:message>
+    <wsdl:message name="ProcessTransactionSecureSoapHeader">
+        <wsdl:part name="SecureSoapHeader" element="tns:SecureSoapHeader" />
+    </wsdl:message>
+    <wsdl:message name="ProcessPATransactionSoapIn">
+        <wsdl:part name="parameters" element="tns:ProcessPATransaction" />
+    </wsdl:message>
+    <wsdl:message name="ProcessPATransactionSoapOut">
+        <wsdl:part name="parameters" element="tns:ProcessPATransactionResponse" />
+    </wsdl:message>
+    <wsdl:message name="ProcessPATransactionSecureSoapHeader">
+        <wsdl:part name="SecureSoapHeader" element="tns:SecureSoapHeader" />
+    </wsdl:message>
+    <wsdl:message name="ProcessVbVTransactionSoapIn">
+        <wsdl:part name="parameters" element="tns:ProcessVbVTransaction" />
+    </wsdl:message>
+    <wsdl:message name="ProcessVbVTransactionSoapOut">
+        <wsdl:part name="parameters" element="tns:ProcessVbVTransactionResponse" />
+    </wsdl:message>
+    <wsdl:message name="ProcessVbVTransactionSecureSoapHeader">
+        <wsdl:part name="SecureSoapHeader" element="tns:SecureSoapHeader" />
+    </wsdl:message>
+    <wsdl:message name="GetVbVResponseFromResponseSoapIn">
+        <wsdl:part name="parameters" element="tns:GetVbVResponseFromResponse" />
+    </wsdl:message>
+    <wsdl:message name="GetVbVResponseFromResponseSoapOut">
+        <wsdl:part name="parameters" element="tns:GetVbVResponseFromResponseResponse" />
+    </wsdl:message>
+    <wsdl:message name="GetVbVResponseFromResponseSecureSoapHeader">
+        <wsdl:part name="SecureSoapHeader" element="tns:SecureSoapHeader" />
+    </wsdl:message>
+    <wsdl:message name="ProcessTransactionAuthSoapIn">
+        <wsdl:part name="parameters" element="tns:ProcessTransactionAuth" />
+    </wsdl:message>
+    <wsdl:message name="ProcessTransactionAuthSoapOut">
+        <wsdl:part name="parameters" element="tns:ProcessTransactionAuthResponse" />
+    </wsdl:message>
+    <wsdl:message name="ProcessTransactionAuthSecureSoapHeader">
+        <wsdl:part name="SecureSoapHeader" element="tns:SecureSoapHeader" />
+    </wsdl:message>
+    <wsdl:message name="GetTransactionSoapIn">
+        <wsdl:part name="parameters" element="tns:GetTransaction" />
+    </wsdl:message>
+    <wsdl:message name="GetTransactionSoapOut">
+        <wsdl:part name="parameters" element="tns:GetTransactionResponse" />
+    </wsdl:message>
+    <wsdl:message name="GetTransactionSecureSoapHeader">
+        <wsdl:part name="SecureSoapHeader" element="tns:SecureSoapHeader" />
+    </wsdl:message>
+    <wsdl:message name="GetAllowedCardBrandsSoapIn">
+        <wsdl:part name="parameters" element="tns:GetAllowedCardBrands" />
+    </wsdl:message>
+    <wsdl:message name="GetAllowedCardBrandsSoapOut">
+        <wsdl:part name="parameters" element="tns:GetAllowedCardBrandsResponse" />
+    </wsdl:message>
+    <wsdl:message name="GetAllowedCardBrandsSecureSoapHeader">
+        <wsdl:part name="SecureSoapHeader" element="tns:SecureSoapHeader" />
+    </wsdl:message>
+    <wsdl:message name="GetAllowedTransactionsSoapIn">
+        <wsdl:part name="parameters" element="tns:GetAllowedTransactions" />
+    </wsdl:message>
+    <wsdl:message name="GetAllowedTransactionsSoapOut">
+        <wsdl:part name="parameters" element="tns:GetAllowedTransactionsResponse" />
+    </wsdl:message>
+    <wsdl:message name="GetAllowedTransactionsSecureSoapHeader">
+        <wsdl:part name="SecureSoapHeader" element="tns:SecureSoapHeader" />
+    </wsdl:message>
+    <wsdl:message name="GetSupportedCurrencySoapIn">
+        <wsdl:part name="parameters" element="tns:GetSupportedCurrency" />
+    </wsdl:message>
+    <wsdl:message name="GetSupportedCurrencySoapOut">
+        <wsdl:part name="parameters" element="tns:GetSupportedCurrencyResponse" />
+    </wsdl:message>
+    <wsdl:message name="GetSupportedCurrencySecureSoapHeader">
+        <wsdl:part name="SecureSoapHeader" element="tns:SecureSoapHeader" />
+    </wsdl:message>
+    <wsdl:portType name="ServiceSoap">
+        <wsdl:operation name="InitToken">
+            <wsdl:input message="tns:InitTokenSoapIn" />
+            <wsdl:output message="tns:InitTokenSoapOut" />
+        </wsdl:operation>
+        <wsdl:operation name="GetPublicKey">
+            <wsdl:input message="tns:GetPublicKeySoapIn" />
+            <wsdl:output message="tns:GetPublicKeySoapOut" />
+        </wsdl:operation>
+        <wsdl:operation name="ProcessTransaction">
+            <wsdl:input message="tns:ProcessTransactionSoapIn" />
+            <wsdl:output message="tns:ProcessTransactionSoapOut" />
+        </wsdl:operation>
+        <wsdl:operation name="ProcessPATransaction">
+            <wsdl:input message="tns:ProcessPATransactionSoapIn" />
+            <wsdl:output message="tns:ProcessPATransactionSoapOut" />
+        </wsdl:operation>
+        <wsdl:operation name="ProcessVbVTransaction">
+            <wsdl:input message="tns:ProcessVbVTransactionSoapIn" />
+            <wsdl:output message="tns:ProcessVbVTransactionSoapOut" />
+        </wsdl:operation>
+        <wsdl:operation name="GetVbVResponseFromResponse">
+            <wsdl:input message="tns:GetVbVResponseFromResponseSoapIn" />
+            <wsdl:output message="tns:GetVbVResponseFromResponseSoapOut" />
+        </wsdl:operation>
+        <wsdl:operation name="ProcessTransactionAuth">
+            <wsdl:input message="tns:ProcessTransactionAuthSoapIn" />
+            <wsdl:output message="tns:ProcessTransactionAuthSoapOut" />
+        </wsdl:operation>
+        <wsdl:operation name="GetTransaction">
+            <wsdl:input message="tns:GetTransactionSoapIn" />
+            <wsdl:output message="tns:GetTransactionSoapOut" />
+        </wsdl:operation>
+        <wsdl:operation name="GetAllowedCardBrands">
+            <wsdl:input message="tns:GetAllowedCardBrandsSoapIn" />
+            <wsdl:output message="tns:GetAllowedCardBrandsSoapOut" />
+        </wsdl:operation>
+        <wsdl:operation name="GetAllowedTransactions">
+            <wsdl:input message="tns:GetAllowedTransactionsSoapIn" />
+            <wsdl:output message="tns:GetAllowedTransactionsSoapOut" />
+        </wsdl:operation>
+        <wsdl:operation name="GetSupportedCurrency">
+            <wsdl:input message="tns:GetSupportedCurrencySoapIn" />
+            <wsdl:output message="tns:GetSupportedCurrencySoapOut" />
+        </wsdl:operation>
+    </wsdl:portType>
+    <wsdl:binding name="ServiceSoap" type="tns:ServiceSoap">
+        <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+        <wsdl:operation name="InitToken">
+            <soap:operation soapAction="https://pgws.alert.com.mt/InitToken" style="document" />
+            <wsdl:input>
+                <soap:body use="literal" />
+                <soap:header message="tns:InitTokenSecureSoapHeader" part="SecureSoapHeader" use="literal" />
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal" />
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="GetPublicKey">
+            <soap:operation soapAction="https://pgws.alert.com.mt/GetPublicKey" style="document" />
+            <wsdl:input>
+                <soap:body use="literal" />
+                <soap:header message="tns:GetPublicKeySecureSoapHeader" part="SecureSoapHeader" use="literal" />
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal" />
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="ProcessTransaction">
+            <soap:operation soapAction="https://pgws.alert.com.mt/ProcessTransaction" style="document" />
+            <wsdl:input>
+                <soap:body use="literal" />
+                <soap:header message="tns:ProcessTransactionSecureSoapHeader" part="SecureSoapHeader" use="literal" />
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal" />
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="ProcessPATransaction">
+            <soap:operation soapAction="https://pgws.alert.com.mt/ProcessPATransaction" style="document" />
+            <wsdl:input>
+                <soap:body use="literal" />
+                <soap:header message="tns:ProcessPATransactionSecureSoapHeader" part="SecureSoapHeader" use="literal" />
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal" />
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="ProcessVbVTransaction">
+            <soap:operation soapAction="https://pgws.alert.com.mt/ProcessVbVTransaction" style="document" />
+            <wsdl:input>
+                <soap:body use="literal" />
+                <soap:header message="tns:ProcessVbVTransactionSecureSoapHeader" part="SecureSoapHeader" use="literal" />
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal" />
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="GetVbVResponseFromResponse">
+            <soap:operation soapAction="https://pgws.alert.com.mt/GetVbVResponseFromResponse" style="document" />
+            <wsdl:input>
+                <soap:body use="literal" />
+                <soap:header message="tns:GetVbVResponseFromResponseSecureSoapHeader" part="SecureSoapHeader" use="literal" />
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal" />
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="ProcessTransactionAuth">
+            <soap:operation soapAction="https://pgws.alert.com.mt/ProcessTransactionAuth" style="document" />
+            <wsdl:input>
+                <soap:body use="literal" />
+                <soap:header message="tns:ProcessTransactionAuthSecureSoapHeader" part="SecureSoapHeader" use="literal" />
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal" />
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="GetTransaction">
+            <soap:operation soapAction="https://pgws.alert.com.mt/GetTransaction" style="document" />
+            <wsdl:input>
+                <soap:body use="literal" />
+                <soap:header message="tns:GetTransactionSecureSoapHeader" part="SecureSoapHeader" use="literal" />
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal" />
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="GetAllowedCardBrands">
+            <soap:operation soapAction="https://pgws.alert.com.mt/GetAllowedCardBrands" style="document" />
+            <wsdl:input>
+                <soap:body use="literal" />
+                <soap:header message="tns:GetAllowedCardBrandsSecureSoapHeader" part="SecureSoapHeader" use="literal" />
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal" />
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="GetAllowedTransactions">
+            <soap:operation soapAction="https://pgws.alert.com.mt/GetAllowedTransactions" style="document" />
+            <wsdl:input>
+                <soap:body use="literal" />
+                <soap:header message="tns:GetAllowedTransactionsSecureSoapHeader" part="SecureSoapHeader" use="literal" />
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal" />
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="GetSupportedCurrency">
+            <soap:operation soapAction="https://pgws.alert.com.mt/GetSupportedCurrency" style="document" />
+            <wsdl:input>
+                <soap:body use="literal" />
+                <soap:header message="tns:GetSupportedCurrencySecureSoapHeader" part="SecureSoapHeader" use="literal" />
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal" />
+            </wsdl:output>
+        </wsdl:operation>
+    </wsdl:binding>
+    <wsdl:binding name="ServiceSoap12" type="tns:ServiceSoap">
+        <soap12:binding transport="http://schemas.xmlsoap.org/soap/http" />
+        <wsdl:operation name="InitToken">
+            <soap12:operation soapAction="https://pgws.alert.com.mt/InitToken" style="document" />
+            <wsdl:input>
+                <soap12:body use="literal" />
+                <soap12:header message="tns:InitTokenSecureSoapHeader" part="SecureSoapHeader" use="literal" />
+            </wsdl:input>
+            <wsdl:output>
+                <soap12:body use="literal" />
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="GetPublicKey">
+            <soap12:operation soapAction="https://pgws.alert.com.mt/GetPublicKey" style="document" />
+            <wsdl:input>
+                <soap12:body use="literal" />
+                <soap12:header message="tns:GetPublicKeySecureSoapHeader" part="SecureSoapHeader" use="literal" />
+            </wsdl:input>
+            <wsdl:output>
+                <soap12:body use="literal" />
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="ProcessTransaction">
+            <soap12:operation soapAction="https://pgws.alert.com.mt/ProcessTransaction" style="document" />
+            <wsdl:input>
+                <soap12:body use="literal" />
+                <soap12:header message="tns:ProcessTransactionSecureSoapHeader" part="SecureSoapHeader" use="literal" />
+            </wsdl:input>
+            <wsdl:output>
+                <soap12:body use="literal" />
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="ProcessPATransaction">
+            <soap12:operation soapAction="https://pgws.alert.com.mt/ProcessPATransaction" style="document" />
+            <wsdl:input>
+                <soap12:body use="literal" />
+                <soap12:header message="tns:ProcessPATransactionSecureSoapHeader" part="SecureSoapHeader" use="literal" />
+            </wsdl:input>
+            <wsdl:output>
+                <soap12:body use="literal" />
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="ProcessVbVTransaction">
+            <soap12:operation soapAction="https://pgws.alert.com.mt/ProcessVbVTransaction" style="document" />
+            <wsdl:input>
+                <soap12:body use="literal" />
+                <soap12:header message="tns:ProcessVbVTransactionSecureSoapHeader" part="SecureSoapHeader" use="literal" />
+            </wsdl:input>
+            <wsdl:output>
+                <soap12:body use="literal" />
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="GetVbVResponseFromResponse">
+            <soap12:operation soapAction="https://pgws.alert.com.mt/GetVbVResponseFromResponse" style="document" />
+            <wsdl:input>
+                <soap12:body use="literal" />
+                <soap12:header message="tns:GetVbVResponseFromResponseSecureSoapHeader" part="SecureSoapHeader" use="literal" />
+            </wsdl:input>
+            <wsdl:output>
+                <soap12:body use="literal" />
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="ProcessTransactionAuth">
+            <soap12:operation soapAction="https://pgws.alert.com.mt/ProcessTransactionAuth" style="document" />
+            <wsdl:input>
+                <soap12:body use="literal" />
+                <soap12:header message="tns:ProcessTransactionAuthSecureSoapHeader" part="SecureSoapHeader" use="literal" />
+            </wsdl:input>
+            <wsdl:output>
+                <soap12:body use="literal" />
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="GetTransaction">
+            <soap12:operation soapAction="https://pgws.alert.com.mt/GetTransaction" style="document" />
+            <wsdl:input>
+                <soap12:body use="literal" />
+                <soap12:header message="tns:GetTransactionSecureSoapHeader" part="SecureSoapHeader" use="literal" />
+            </wsdl:input>
+            <wsdl:output>
+                <soap12:body use="literal" />
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="GetAllowedCardBrands">
+            <soap12:operation soapAction="https://pgws.alert.com.mt/GetAllowedCardBrands" style="document" />
+            <wsdl:input>
+                <soap12:body use="literal" />
+                <soap12:header message="tns:GetAllowedCardBrandsSecureSoapHeader" part="SecureSoapHeader" use="literal" />
+            </wsdl:input>
+            <wsdl:output>
+                <soap12:body use="literal" />
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="GetAllowedTransactions">
+            <soap12:operation soapAction="https://pgws.alert.com.mt/GetAllowedTransactions" style="document" />
+            <wsdl:input>
+                <soap12:body use="literal" />
+                <soap12:header message="tns:GetAllowedTransactionsSecureSoapHeader" part="SecureSoapHeader" use="literal" />
+            </wsdl:input>
+            <wsdl:output>
+                <soap12:body use="literal" />
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="GetSupportedCurrency">
+            <soap12:operation soapAction="https://pgws.alert.com.mt/GetSupportedCurrency" style="document" />
+            <wsdl:input>
+                <soap12:body use="literal" />
+                <soap12:header message="tns:GetSupportedCurrencySecureSoapHeader" part="SecureSoapHeader" use="literal" />
+            </wsdl:input>
+            <wsdl:output>
+                <soap12:body use="literal" />
+            </wsdl:output>
+        </wsdl:operation>
+    </wsdl:binding>
+    <wsdl:service name="Service">
+        <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Alert Payment Gateway Webservice</wsdl:documentation>
+        <wsdl:port name="ServiceSoap" binding="tns:ServiceSoap">
+            <soap:address location="https://pgws.alert.com.mt/service.asmx" />
+        </wsdl:port>
+        <wsdl:port name="ServiceSoap12" binding="tns:ServiceSoap12">
+            <soap12:address location="https://pgws.alert.com.mt/service.asmx" />
+        </wsdl:port>
+    </wsdl:service>
+</wsdl:definitions>
