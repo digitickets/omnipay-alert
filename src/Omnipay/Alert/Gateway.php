@@ -23,8 +23,19 @@ class Gateway extends AbstractGateway
         return array(
             'BankMerchantNo'    => '',
             'userID'            => '',
-            'password'          => ''
+            'password'          => '',
+            'liveEndPoint'      => ''
         );
+    }
+
+    public function getEndPoint()
+    {
+    	return $this->getParameter('liveEndPoint');
+    }
+
+    public function setEndPoint($value)
+    {
+    	return $this->setParameter('liveEndPoint', $value);
     }
 
     public function getBankMerchantNo()
@@ -65,6 +76,33 @@ class Gateway extends AbstractGateway
     public function setMerchantReference($value)
     {
         return $this->setParameter('MerchantReference', $value);
+    }
+
+    public function getCallbackMethod()
+    {
+        return $this->getParameter('callbackMethod');
+    }
+    public function setCallbackMethod($value)
+    {
+        return $this->setParameter('callbackMethod', $value);
+    }
+
+    public function getReturnUrl()
+    {
+        return $this->getParameter('returnUrl');
+    }
+    public function setReturnUrl($value)
+    {
+        return $this->setParameter('returnUrl', $value);
+    }
+
+    public function getNotifyUrl()
+    {
+        return $this->getParameter('notifyUrl');
+    }
+    public function setNotifyUrl($value)
+    {
+        return $this->setParameter('notifyUrl', $value);
     }
 
     public function purchase(array $parameters = array())

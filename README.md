@@ -14,7 +14,7 @@ to your `composer.json` file:
 ```json
 {
     "require": {
-        "dignat/omnipay-alert": "~1.0"
+        "dignat/omnipay-alert": "*"
     }
 }
 ```

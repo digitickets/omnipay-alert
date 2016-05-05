@@ -41,10 +41,8 @@ class PurchaseRequest extends AbstractRequest
     public $UserDefinedField5;
     public $ClientIP;
     public $AMEXPurchaseType;
-    protected $liveEndpoint = 'http://test.local/agp/checkout.php';
 
-
-    const WSDL = "service.wsdl"; // Physical path to WSDL file. Should be in a non web-accessible directory
+    const WSDL = ""; // Physical path to WSDL file. Should be in a non web-accessible directory
     const SecureAPGPath = ''; // Physical path to secure.apg file. Should be in a non web-accessible directory
     const APGNamespace = "https://pgws.alert.com.mt/"; // APGNamespace. Do not modify.
     const CurrencyCode = "";
@@ -71,6 +69,16 @@ class PurchaseRequest extends AbstractRequest
     public function setBankMerchantNo($value)
     {
         return $this->setParameter('BankMerchantNo', $value);
+    }
+
+     public function getEndPoint()
+    {
+    	return $this->getParameter('liveEndPoint');
+    }
+
+    public function setEndPoint($value)
+    {
+    	return $this->setParameter('liveEndPoint', $value);
     }
 
     public function getUserID()
@@ -130,51 +138,17 @@ class PurchaseRequest extends AbstractRequest
         return $this->setParameter('notifyUrl', $value);
     }
 
-    public function getCardBrand()
-    {
-        try {
-            foreach ($this->getAllowedCardBrands($this->getBankMerchantNo()) as $cardBrands) {
-                if (strtoupper($this->getCard()->getBrand()) == preg_replace('/\s+/', '', $cardBrands->DESCRIPTION)) {
-                    return $cardBrands->CODE;
-                }
-            }
-        } catch (\ Exception $ex) {
-            $ex->getMessage();
-            throw new \Exception("Unable to retrieve card brand.");
-        }
-    }
-
-    public function getCurrency()
-    {
-        return $this->GetSupportedCurrency($this->getBankMerchantNo());
-    }
-
-    public function getTransactionID()
-    {
-        $data = new \SimpleXMLElement('<RequestValue/>');
-        $data->addChild('TransactionType', 'Tentative');
-        $data->addChild('BankMerchantNo', $this->getBankMerchantNo());
-        $data->addChild('MerchantReference', $this->getMerchantReference());
-        $data->addChild('CurrencyNumber', $this->getCurrency());
-        $data->addChild('Amount', $this->getAmount());
-        $data->addChild('ClientIP', $_SERVER['REMOTE_ADDR']);
-
-        $result = $this->ProcessTransaction($data, false);
-
-        return $result->TransactionReferenceID;
-    }
 
     public function getData()
     {
-        //$this->getCard()->validate();
-        //$this->validate('amount');
+
         if (!$this->getNotifyUrl()) {
         $this->validate('returnUrl');
         }
         $data =  new clsRequest();
 
         $data->KeyID = '';
-        $data->TransactionReferenceID = $this->getTransactionID();
+        $data->TransactionReferenceID = '';
         $data->MerchantReference = $this->getMerchantReference();
         $data->BankMerchantNo = $this->getBankMerchantNo();
         $data->BankAlias = '';
@@ -204,200 +178,6 @@ class PurchaseRequest extends AbstractRequest
         return $data;
     }
 
-    public function ProcessTransaction($objRequest, $encryptCardDetails = false) {
-
-        try {
-            $resultNode = $this->GetInitToken();
-            $objRequest->KeyID = (string) $resultNode->KeyID;
-
-            if($encryptCardDetails){
-                $objRequest->CardNumber = $this->EncryptString($objRequest->CardNumber, $resultNode->Key);
-                $objRequest->CVV2 = $this->EncryptString($objRequest->CVV2, $resultNode->Key);
-                $objRequest->ExpiryYear = $this->EncryptString($objRequest->ExpiryYear, $resultNode->Key);
-                $objRequest->ExpiryMonth = $this->EncryptString($objRequest->ExpiryMonth, $resultNode->Key);
-                $objRequest->ExpiryDay = $this->EncryptString($objRequest->ExpiryDay, $resultNode->Key);
-                $objRequest->CardHolder = $this->EncryptString($objRequest->CardHolder, $resultNode->Key);
-            } else {
-                $objRequest->CardNumber;
-                $objRequest->CVV2;
-                $objRequest->ExpiryYear;
-                $objRequest->ExpiryMonth;
-                $objRequest->CardHolder;
-            }
-
-            $soap = @new SoapClient(PurchaseRequest::WSDL, array('trace' => 1));
-
-            /* set the Headers of Soap Client. */
-            $soap->__setSoapHeaders($this->GetSoapHeader());
-
-            // debugObject($objRequest, "REQUEST OBJECT SENT FOR TRANSACTION PROCESSING");
-
-            $params = array('RequestValue' => $objRequest);
-
-            $soap->ProcessTransaction($params);
-
-            $xml = @simplexml_load_string($soap->__getLastResponse());
-            $parentNode = $xml->xpath("soap:Body");
-            $resultNode = $parentNode[0]->ProcessTransactionResponse[0]->ProcessTransactionResult[0];
-
-            return $resultNode;
-        } catch (\Exception $ex) {
-            $this->handleException($ex);
-            throw new \Exception("Unable to process transaction.");
-        }
-    }
-
-    public function GetSupportedCurrency($BankMerchantID) {
-
-        try {
-
-            $soap = @new SoapClient(PurchaseRequest::WSDL, array('trace' => 1));
-
-            /* set the Headers of Soap Client. */
-            $soap->__setSoapHeaders($this->GetSoapHeader());
-
-            $params = array('BankMerchantID'=>$BankMerchantID);
-            $soap->GetSupportedCurrency($params);
-
-            $xml = @simplexml_load_string($soap->__getLastResponse());
-            $parentNode = $xml->xpath("soap:Body");
-            $resultNode = $parentNode[0]->GetSupportedCurrencyResponse[0]->GetSupportedCurrencyResult[0];
-            return $resultNode->Number;
-        } catch (\Exception $ex) {
-            $this->handleException($ex);
-            throw new \Exception("Unable to retrieve currency.");
-        }
-    }
-
-    public function GetAllowedCardBrands($BankMerchantID) {
-
-        try {
-            $soap = @new SoapClient(PurchaseRequest::WSDL, array('trace' => 1));
-
-            /* set the Headers of Soap Client. */
-            $soap->__setSoapHeaders($this->GetSoapHeader());
-
-            $params = array('BankMerchantID'=>$BankMerchantID);
-            $soap->GetAllowedCardBrands($params);
-
-            $xml = @simplexml_load_string($soap->__getLastResponse())->xpath("//Card");
-
-            return $xml;
-        } catch (\Exception $ex) {
-            $ex->getMessage();
-            throw new \Exception("Unable to retrieve cards.");
-        }
-    }
-
-
-    private function GetSoapHeader() {
-
-        /* Body of the SOAP Header. */
-        $headerbody = array('Identification' => array('UserID' => $this->getUserID(),
-                                                      'Password' => $this->getPassword(),
-                                                      'ReferringURL' => $this->selfURL()));
-
-        /* Create SOAP Header. */
-        return new SOAPHeader("https://pgws.alert.com.mt/", 'SecureSoapHeader', $headerbody);
-    }
-    /* <summary>
-      * Returns the current URL as string
-      * </summary>
-      */
-
-    private function selfURL() {
-        if (!isset($_SERVER['REQUEST_URI'])) {
-            $serverrequri = $_SERVER['PHP_SELF'];
-        } else {
-            $serverrequri = $_SERVER['REQUEST_URI'];
-        }
-        $s = empty($_SERVER["HTTPS"]) ? '' : ($_SERVER["HTTPS"] == "on") ? "s" : "";
-        $protocol = $this->strleft(strtolower($_SERVER["SERVER_PROTOCOL"]), "/") . $s;
-        $port = ($_SERVER["SERVER_PORT"] == "80") ? "" : (":" . $_SERVER["SERVER_PORT"]);
-        return $protocol . "://" . $_SERVER['SERVER_NAME'] . $port . $serverrequri;
-    }
-
-    private function strleft($s1, $s2) {
-        return substr($s1, 0, strpos($s1, $s2));
-    }
-    private function GetInitToken() {
-
-        try {
-            $soap = new SoapClient(PurchaseRequest::WSDL, array('trace' => 1));
-
-            /* set the Headers of Soap Client. */
-            $header = $this->GetSoapHeader();
-
-            $soap->__setSoapHeaders($this->GetSoapHeader());
-
-            $soap->InitToken();
-
-            $xml = @simplexml_load_string($soap->__getLastResponse());
-            $parentNode = $xml->xpath("soap:Body");
-            $resultNode = $parentNode[0]->InitTokenResponse[0]->InitTokenResult[0];
-
-            return $resultNode;
-        } catch (\Exception $ex) {
-            $this->handleException($ex);
-            throw new \Exception("Unable to retrieve InitToken.");
-        }
-    }
-    public function handleException($ex) {
-        if ( defined( 'DEBUG' ) && DEBUG == true ){
-            echo 'Caught exception: ',  $ex->getMessage(), "<br><br>";
-        }
-        // TODO: log exception and show error page
-    }
-
-    private function EncryptString($bytText, $xmlkey) {
-        require_once '../phpseclib/Crypt/RSA.php';
-        $rsa = new phpCrypt_RSA();
-        $xml = new DOMDocument();
-        $xml->loadXML($xmlkey);
-
-        $decodedModulus = base64_decode($xml->getElementsByTagName('Modulus')->item(0)->nodeValue);
-
-        $modulus = new Math_BigInteger($decodedModulus, 256);
-        $exponent = new Math_BigInteger(base64_decode($xml->getElementsByTagName('Exponent')->item(0)->nodeValue), 256);
-
-        $rsa->loadKey(array("modulus" => $modulus, "exponent" => $exponent), CRYPT_RSA_PUBLIC_FORMAT_RAW);
-
-        $rsa->setEncryptionMode(CRYPT_RSA_ENCRYPTION_OAEP);
-
-        /* Dim intKeySize As Integer = PublicKey.KeySize \ 8 */
-        $intKeySize = strlen($decodedModulus);
-
-        /* Dim intMaxLength As Integer = intKeySize - 42 */
-        $intMaxLength = floor(($intKeySize - 42) / 4);
-
-        /* Dim intDataLength As Integer = bytText.Length */
-        $intDataLength = strlen($bytText);
-
-        /* Dim intIterations As Integer = intDataLength \ intMaxLength */
-        $intIterations = floor($intDataLength / $intMaxLength);
-
-        /* Dim sbText As New System.Text.StringBuilder() */
-        $sbText = "";
-
-        /* For i As Integer = 0 To intIterations */
-        for ($i = 0; $i <= $intIterations; $i++) {
-            /* Buffer.BlockCopy(bytText, intMaxLength * i, bytTempBytes, 0, bytTempBytes.Length) */
-            $bytTempBytes = substr($bytText, $intMaxLength * $i, $intMaxLength);
-            $bytTempBytes = mb_convert_encoding($bytTempBytes, "UTF-32LE");
-
-            /* Dim bytEncryptedBytes As Byte() = objRSACryptoServiceProvider.Encrypt(bytTempBytes, True) */
-            $bytEncryptedBytes = $rsa->encrypt($bytTempBytes);
-
-            /* Array.Reverse(bytEncryptedBytes) */
-            $bytEncryptedBytes = strrev($bytEncryptedBytes);
-
-            /* sbText.Append(Convert.ToBase64String(bytEncryptedBytes)) */
-            $sbText .= base64_encode($bytEncryptedBytes);
-        }
-
-        return $sbText;
-    }
-
     /**
      * @param SimpleXMLElement $data
      * @return \Omnipay\Common\Message\ResponseInterface|Response
@@ -407,8 +187,4 @@ class PurchaseRequest extends AbstractRequest
       return $this->response = new Response($this, $data);
     }
 
-    public function getEndpoint()
-    {
-        return $this->liveEndpoint;
-    }
 }
