@@ -57,4 +57,5 @@ class Response extends AbstractResponse implements RedirectResponseInterface
     {
         return $this->getData();
     }
+
 }

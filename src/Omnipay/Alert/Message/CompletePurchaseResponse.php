@@ -9,7 +9,7 @@ class CompletePurchaseResponse extends AbstractResponse
 {
     public function isSuccessful()
     {
-        return isset($this->data['Status']) ? $this->data['Status'] : null;
+        return ($this->data['Status'] == true && $this->data['Result'] == 'Captured') ? $this->data['Status'] : null;
     }
     public function getTransactionReference()
     {

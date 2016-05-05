@@ -1,4 +1,4 @@
-<?php
+<<?php
 
 namespace Omnipay\Alert\Message;
 
@@ -16,22 +16,6 @@ use SoapHeader;
  */
 class PurchaseRequest extends AbstractRequest
 {
-    public $KeyID;
-    public $TransactionReferenceID;
-    public $MerchantReference;
-    public $BankMerchantNo;
-    public $BankAlias;
-    public $TransactionType;
-    public $CardBrand;
-    public $CurrencyNumber;
-    public $CurrencyCode;
-    public $Amount;
-    public $CardNumber;
-    public $CVV2;
-    public $ExpiryYear;
-    public $ExpiryMonth;
-    public $ExpiryDay;
-    public $CardHolder;
     public $Address;
     public $Postcode;
     public $UserDefinedField1;
@@ -61,34 +45,34 @@ class PurchaseRequest extends AbstractRequest
     const Electronic = "Electronic";
     const Physical = "Physical";
 
-    public function getBankMerchantNo()
+    public function getMerchantNumber()
     {
-        return $this->getParameter('BankMerchantNo');
+        return $this->getParameter('merchantNumber');
     }
 
-    public function setBankMerchantNo($value)
+    public function setMerchantNumber($value)
     {
-        return $this->setParameter('BankMerchantNo', $value);
+        return $this->setParameter('merchantNumber', $value);
     }
 
-     public function getEndPoint()
+    public function getEndpoint()
     {
-    	return $this->getParameter('liveEndPoint');
+        return $this->getParameter('endpoint');
     }
 
-    public function setEndPoint($value)
+    public function setEndpoint($value)
     {
-    	return $this->setParameter('liveEndPoint', $value);
+        return $this->setParameter('endpoint', $value);
     }
 
     public function getUserID()
     {
-        return $this->getParameter('userID');
+        return $this->getParameter('userId');
     }
 
     public function setUserID($value)
     {
-        return $this->setParameter('userID', $value);
+        return $this->setParameter('userId', $value);
     }
 
     public function getPassword()
@@ -150,7 +134,7 @@ class PurchaseRequest extends AbstractRequest
         $data->KeyID = '';
         $data->TransactionReferenceID = '';
         $data->MerchantReference = $this->getMerchantReference();
-        $data->BankMerchantNo = $this->getBankMerchantNo();
+        $data->BankMerchantNo = $this->getMerchantNumber();
         $data->BankAlias = '';
         $data->TransactionType = '';
         $data->CardBrand = '';

@@ -21,41 +21,41 @@ class Gateway extends AbstractGateway
     public function getDefaultParameters()
     {
         return array(
-            'BankMerchantNo'    => '',
-            'userID'            => '',
+            'merchantNumber'    => '',
+            'userId'            => '',
             'password'          => '',
-            'liveEndPoint'      => ''
+            'endpoint'          => ''
         );
     }
 
-    public function getEndPoint()
+    public function getMerchantNumber()
     {
-    	return $this->getParameter('liveEndPoint');
+        return $this->getParameter('merchantNumber');
     }
 
-    public function setEndPoint($value)
+    public function setMerchantNumber($value)
     {
-    	return $this->setParameter('liveEndPoint', $value);
+        return $this->setParameter('merchantNumber', $value);
     }
 
-    public function getBankMerchantNo()
+    public function getEndpoint()
     {
-        return $this->getParameter('BankMerchantNo');
+        return $this->getParameter('endpoint');
     }
 
-    public function setBankMerchantNo($value)
+    public function setEndpoint($value)
     {
-        return $this->setParameter('BankMerchantNo', $value);
+        return $this->setParameter('endpoint', $value);
     }
 
     public function getUserID()
     {
-        return $this->getParameter('userID');
+        return $this->getParameter('userId');
     }
 
     public function setUserID($value)
     {
-        return $this->setParameter('userID', $value);
+        return $this->setParameter('userId', $value);
     }
 
     public function getPassword()
