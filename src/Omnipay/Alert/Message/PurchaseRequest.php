@@ -85,14 +85,14 @@ class PurchaseRequest extends AbstractRequest
         return $this->setParameter('password', $value);
     }
 
-    public function getMerchantReference()
+    public function getTransactionId()
     {
-        return $this->getParameter('MerchantReference');
+        return $this->getParameter('transactionId');
     }
 
-    public function setMerchantReference($value)
+    public function setTransactionId($value)
     {
-        return $this->setParameter('MerchantReference', $value);
+        return $this->setParameter('transactionId', $value);
     }
 
     public function getCallbackMethod()
@@ -133,7 +133,7 @@ class PurchaseRequest extends AbstractRequest
 
         $data->KeyID = '';
         $data->TransactionReferenceID = '';
-        $data->MerchantReference = $this->getMerchantReference();
+        $data->MerchantReference = $this->getTransactionId();
         $data->BankMerchantNo = $this->getMerchantNumber();
         $data->BankAlias = '';
         $data->TransactionType = '';

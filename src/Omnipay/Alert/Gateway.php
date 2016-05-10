@@ -68,14 +68,14 @@ class Gateway extends AbstractGateway
         return $this->setParameter('password', $value);
     }
 
-    public function getMerchantReference()
+    public function getTransactionId()
     {
-        return $this->getParameter('MerchantReference');
+        return $this->getParameter('transactionId');
     }
 
-    public function setMerchantReference($value)
+    public function setTransactionId($value)
     {
-        return $this->setParameter('MerchantReference', $value);
+        return $this->setParameter('transactionId', $value);
     }
 
     public function getCallbackMethod()
