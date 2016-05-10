@@ -2,14 +2,9 @@
 
 namespace Omnipay\Alert\Message;
 
-use DOMDocument;
-use Omnipay\Alert\Message\Helper;
 use Omnipay\Alert\Message\Helper\clsRequet;
-use Omnipay\Omnipay;
 use SimpleXMLElement;
 use Omnipay\Common\Message\AbstractRequest;
-use SoapClient;
-use SoapHeader;
 
 /**
  * Alert Purchase Request
