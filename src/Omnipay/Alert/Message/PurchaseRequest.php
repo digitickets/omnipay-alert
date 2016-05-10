@@ -1,10 +1,10 @@
-<<?php
+<?php
 
 namespace Omnipay\Alert\Message;
 
 use DOMDocument;
 use Omnipay\Alert\Message\Helper;
-use Omnipay\Alert\Message\Helper\clsRequest;
+use Omnipay\Alert\Message\Helper\clsRequet;
 use Omnipay\Omnipay;
 use SimpleXMLElement;
 use Omnipay\Common\Message\AbstractRequest;
