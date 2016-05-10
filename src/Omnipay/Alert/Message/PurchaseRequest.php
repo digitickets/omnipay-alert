@@ -2,7 +2,7 @@
 
 namespace Omnipay\Alert\Message;
 
-use Omnipay\Alert\Message\Helper\clsRequet;
+use Omnipay\Alert\Message\Helper\clsRequest;
 use SimpleXMLElement;
 use Omnipay\Common\Message\AbstractRequest;
 
