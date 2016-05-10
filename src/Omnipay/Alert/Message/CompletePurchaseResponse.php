@@ -26,7 +26,7 @@ class CompletePurchaseResponse extends AbstractResponse
         return isset($this->data['Message']) ? $this->data['Message'] : null;
     }
 
-    public function getMerchantReference()
+    public function getTransactionId()
     {
         return isset($this->data['MerchantReference']) ? $this->data['MerchantReference'] : null;
     }
