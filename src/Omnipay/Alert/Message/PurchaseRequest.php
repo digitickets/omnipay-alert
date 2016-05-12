@@ -60,25 +60,6 @@ class PurchaseRequest extends AbstractRequest
         return $this->setParameter('endpoint', $value);
     }
 
-    public function getUserID()
-    {
-        return $this->getParameter('userId');
-    }
-
-    public function setUserID($value)
-    {
-        return $this->setParameter('userId', $value);
-    }
-
-    public function getPassword()
-    {
-        return $this->getParameter('password');
-    }
-
-    public function setPassword($value)
-    {
-        return $this->setParameter('password', $value);
-    }
 
     public function getTransactionId()
     {
