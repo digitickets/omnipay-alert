@@ -46,7 +46,6 @@ class Gateway extends AbstractGateway
         return $this->setParameter('endpoint', $value);
     }
 
-
     public function getTransactionId()
     {
         return $this->getParameter('transactionId');
