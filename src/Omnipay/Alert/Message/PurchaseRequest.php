@@ -71,6 +71,16 @@ class PurchaseRequest extends AbstractRequest
         return $this->setParameter('transactionId', $value);
     }
 
+    public function getDescription()
+    {
+        return $this->getParameter('description');
+    }
+
+    public function setDescription($value)
+    {
+        return $this->setParameter('description', $value);
+    }
+
     public function getCallbackMethod()
     {
         return $this->getParameter('callbackMethod');
@@ -133,6 +143,7 @@ class PurchaseRequest extends AbstractRequest
         $data->AMEXPurchaseType = '';
         $data->notifyUrl = $this->getNotifyUrl();
         $data->returnUrl = $this->getReturnUrl();
+        $data->UserDefinedField1 = $this->getDescription();
         $data->CheckoutRequest = '';
 
         return $data;
