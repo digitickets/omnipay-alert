@@ -143,7 +143,7 @@ class PurchaseRequest extends AbstractRequest
         $data->AMEXPurchaseType = '';
         $data->notifyUrl = $this->getNotifyUrl();
         $data->returnUrl = $this->getReturnUrl();
-        $data->UserDefinedField1 = preg_replace('/[\s]+/g','',$this->getDescription());
+        $data->UserDefinedField1 = preg_replace('/[\s]+/','',$this->getDescription());
         $data->CheckoutRequest = '';
 
         return $data;
