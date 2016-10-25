@@ -127,7 +127,7 @@ class PurchaseRequest extends AbstractRequest
         return $this->filterAndConcatenateAddressFields($this->getCard()->getAddress1(), $this->getCard()->getAddress2());
     }
 
-    public function getUserField()
+    public function UserDefinedField1()
     {
         return  $this->filterUserField($this->getDescription());
     }
@@ -167,7 +167,7 @@ class PurchaseRequest extends AbstractRequest
         $data->AMEXPurchaseType = '';
         $data->notifyUrl = $this->getNotifyUrl();
         $data->returnUrl = $this->getReturnUrl();
-        $data->UserDefinedField1 =  $this->getUserField();
+        $data->UserDefinedField1 =  $this->UserDefinedField1();
         $data->CheckoutRequest = '';
 
         return $data;
