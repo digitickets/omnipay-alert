@@ -133,7 +133,7 @@ class PurchaseRequest extends AbstractRequest
         $data->ExpiryMonth = '';
         $data->ExpiryDay = '';
         $data->CardHolder = '';
-        $data->Address = $this->getCard()->getAddress1();
+        $data->Address = preg_replace('/[^\w\s]/','',str_replace('_','',$this->getCard()->getAddress1()));
         $data->Postcode = $this->getCard()->getPostcode();
         $data->Name = $this->getCard()->getName();;
         $data->Country = $this->getCard()->getCountry();
