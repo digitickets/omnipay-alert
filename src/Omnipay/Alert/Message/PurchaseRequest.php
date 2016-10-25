@@ -108,18 +108,28 @@ class PurchaseRequest extends AbstractRequest
         return $this->setParameter('notifyUrl', $value);
     }
 
-    public function filterAndConcatenateAddressFields($address1, $address2)
+    private function filterAndConcatenateAddressFields($address1, $address2)
     {
         $address = preg_replace('/[^\w\s]/','',substr(str_replace('_','',$address1 . '' . $address2), 0, 100));
 
         return $address;
     }
 
-    public function filterUserField($userField)
+    private function filterUserField($userField)
     {
         $userField = preg_replace('/[A-Z][A-Z\d]+/','',substr(preg_replace('/[\s\(\)]+/','',$userField), 0, 20 ));
 
         return $userField;
+    }
+
+    public function getAddress()
+    {
+        return $this->filterAndConcatenateAddressFields($this->getCard()->getAddress1(), $this->getCard()->getAddress2());
+    }
+
+    public function getUserField()
+    {
+        return  $this->filterUserField($this->getDescription());
     }
 
 
@@ -147,7 +157,7 @@ class PurchaseRequest extends AbstractRequest
         $data->ExpiryMonth = '';
         $data->ExpiryDay = '';
         $data->CardHolder = '';
-        $data->Address = $this->filterAndConcatenateAddressFields($this->getCard()->getAddress1(), $this->getCard()->getAddress2());
+        $data->Address = $this->getAddress();
         $data->Postcode = $this->getCard()->getPostcode();
         $data->Name = $this->getCard()->getName();;
         $data->Country = $this->getCard()->getCountry();
@@ -157,7 +167,7 @@ class PurchaseRequest extends AbstractRequest
         $data->AMEXPurchaseType = '';
         $data->notifyUrl = $this->getNotifyUrl();
         $data->returnUrl = $this->getReturnUrl();
-        $data->UserDefinedField1 =  $this->filterUserField($this->getDescription());
+        $data->UserDefinedField1 =  $this->getUserField();
         $data->CheckoutRequest = '';
 
         return $data;
