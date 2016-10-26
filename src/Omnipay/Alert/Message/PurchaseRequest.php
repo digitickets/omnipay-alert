@@ -108,28 +108,15 @@ class PurchaseRequest extends AbstractRequest
         return $this->setParameter('notifyUrl', $value);
     }
 
-    private function filterAndConcatenateAddressFields($address1, $address2)
-    {
-        $address = preg_replace('/[^\w\s]/','',substr(str_replace('_','',$address1 . '' . $address2), 0, 100));
-
-        return $address;
-    }
-
-    private function filterUserField($userField)
-    {
-        $userField = preg_replace('/[A-Z][A-Z\d]+/','',substr(preg_replace('/[\s\(\)]+/','',$userField), 0, 20 ));
-
-        return $userField;
-    }
 
     public function getAddress()
     {
-        return $this->filterAndConcatenateAddressFields($this->getCard()->getAddress1(), $this->getCard()->getAddress2());
+        return substr(preg_replace('/[^\w ]/','',str_replace('_','',$this->getCard()->getAddress1() . '' . $this->getCard()->getAddress2())), 0, 100);
     }
 
     public function UserDefinedField1()
     {
-        return  $this->filterUserField($this->getDescription());
+         return substr(preg_replace('/[^\w ]/','',str_replace('_','',$this->getDescription())), 0, 20 );
     }
 
 
