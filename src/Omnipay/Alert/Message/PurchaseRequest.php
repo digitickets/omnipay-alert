@@ -111,12 +111,12 @@ class PurchaseRequest extends AbstractRequest
 
     public function getAddress()
     {
-        return substr(preg_replace('/[^\w ]/','',str_replace('_','',$this->getCard()->getAddress1() . '' . $this->getCard()->getAddress2())), 0, 100);
+        return substr(preg_replace('/[^a-zA-Z0-9 ]/','',$this->getCard()->getAddress1() . '' . $this->getCard()->getAddress2()), 0, 100);
     }
 
     public function UserDefinedField1()
     {
-         return substr(preg_replace('/[^\w ]/','',str_replace('_','',$this->getDescription())), 0, 20 );
+         return substr(preg_replace('/[^a-zA-Z0-9 ]/','',$this->getDescription()), 0, 20 );
     }
 
 
