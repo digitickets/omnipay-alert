@@ -1,5 +1,5 @@
 {
-    "name": "dignat/omnipay-alert",
+    "name": "digitickets/omnipay-alert",
     "type": "library",
     "description": "Alert driver for the Omnipay payment processing library",
     "keywords": [
@@ -10,7 +10,7 @@
         "pay",
         "payment"
     ],
-    "homepage": "https://github.com/dignat/omnipay-alert",
+    "homepage": "https://github.com/digitickets/omnipay-alert",
     "license": "MIT",
     "authors": [
         {
@@ -30,12 +30,7 @@
         "omnipay/tests": "2.*",
         "phpunit/phpunit": "~3.7.16",
         "squizlabs/php_codesniffer": "~1.4.4"
-    },
-    "extra": {
-        "branch-alias": {
-            "dev-master": "2.0.x-dev"
-        }
-    },
+    },  
     "minimum-stability": "dev",
     "prefer-stable": true
 }
